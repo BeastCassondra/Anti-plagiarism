@@ -1,0 +1,30 @@
+echo "# Anti-plagiarism" >> README.md
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/<BeastCassondra>/<repository>.git
+git push -u origin master
+import os
+from difflib import SequenceMatcher
+
+def similar(a, b):
+    return SequenceMatcher(None, a, b).ratio()
+
+def compare_files(file1, file2):
+    with open(file1, 'r') as f1, open(file2, 'r') as f2:
+        text1 = f1.read()
+        text2 = f2.read()
+        similarity = similar(text1, text2)
+        return similarity
+
+def compare_all_files(folder_path, file_path):
+    files = os.listdir(folder_path)
+    for file in files:
+        if file.endswith('.txt'):
+            similarity = compare_files(os.path.join(folder_path, file), file_path)
+            print(f'Similarity between {file} and {file_path}: {similarity}')
+
+if __name__ == '__main__':
+    folder_path = 'path/to/directory'
+    file_path = 'path/to/file.txt'
+    compare_all_files(folder_path, file_path)
